@@ -84,7 +84,7 @@ for (let i = 0; i < 7; i++) {
   let ri = Math.floor(Math.random() * all_recipes.length);
   let recipe = all_recipes[ri];
   today.push(recipe);
-  mfetch('/groups/mealplans', {
+  let result = await mfetch('/groups/mealplans', {
     method: 'POST',
     body: JSON.stringify({
       date: dt,
@@ -94,11 +94,16 @@ for (let i = 0; i < 7; i++) {
       recipeId: recipe.id,
     })
   });
+  if (result.status > 299) {
+    console.error('problem creating lunch');
+    console.error(result.statusText);
+    console.error(await result.json());
+  }
   
   ri = Math.floor(Math.random() * all_recipes.length);
   recipe = all_recipes[ri];
   today.push(recipe);
-  mfetch('/groups/mealplans', {
+  result = await mfetch('/groups/mealplans', {
     method: 'POST',
     body: JSON.stringify({
       date: dt,
@@ -108,6 +113,11 @@ for (let i = 0; i < 7; i++) {
       recipeId: recipe.id,
     })
   });
+  if (result.status > 299) {
+    console.error('problem creating lunch');
+    console.error(result.statusText);
+    console.error(await result.json());
+  }
 }
 
 

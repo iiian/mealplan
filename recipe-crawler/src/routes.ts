@@ -16,7 +16,7 @@ router.addDefaultHandler(async ({ enqueueLinks, log }) => {
     })
 });
 
-const ALL_FOODS: any[] = (await (await mfetch('/foods?page=1&perPage=999999999999', { method: 'GET' })).json() as any).items as any[];
+const ALL_FOODS: any[] = (await (await mfetch('/foods?page=1&perPage=999999999999', { method: 'GET' })).json() as any).items as any[] ?? [];
 router.addHandler('detail', async ({ request, page, log }) => {
     const result = await mfetch('/recipes/create-url', {
         method: 'POST',
@@ -24,6 +24,8 @@ router.addHandler('detail', async ({ request, page, log }) => {
     });
     if (result.status > 299) {
         console.error('problem creating from url');
+        console.error(result.statusText);
+        console.error(await result.json());
         return
     }
     const recipe_slug = await result.json() as string;
